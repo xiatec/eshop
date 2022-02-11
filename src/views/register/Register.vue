@@ -25,25 +25,62 @@
       </div>
     </div>
   </div>
+  <Toast v-if="toastData.showToast" :message="toastData.toastmessage"/>
 </template>
 
 <script>
-import {useRouter} from 'vue-router'
-export default {
-  name: 'Register',
-  setup() {
-      const router = useRouter();
-      const handleRegister = () => {
-          alert('正在为您注册身份信息...');
+import { reactive } from "vue";
+import { useRouter } from "vue-router";
+import { post } from "../../utils/request";
+import Toast, { useToastEffect } from "../../components/Toast.vue";
+// 注册逻辑
+const useRegisterEffect = (showToast) => {
+  const router = useRouter();
+  const data = reactive({
+    username: "",
+    password: "",
+    ensurement: "",
+  });
+  const handleRegister = async () => {
+    try {
+      const result = await post("/api/user/register", {
+        username: data.username,
+        password: data.password,
+      });
+      if (result?.data?.errno === 0) {
+        showToast("注册成功");
+      } else {
+        showToast("注册失败");
       }
-      const handleLoginClick = () => {
-          router.push({name: 'Login'})
-      }
-      return {
-          handleRegister,
-          handleLoginClick
-      }
+    } catch (error) {
+      showToast("请求失败");
+    }
+  };
+  return { handleRegister, data };
+};
+// 已有账号去登录逻辑
+const useLoginClickEffect = () => {
+  const router = useRouter();
+  const handleLoginClick = () => {
+    router.push({name: 'Login'})
   }
+  return {handleLoginClick}
+} 
+export default {
+  name: "Register",
+  components: { Toast },
+  setup() {
+    const { showToast, toastData } = useToastEffect();
+    const { handleRegister, data } = useRegisterEffect(showToast);
+    const {handleLoginClick} = useLoginClickEffect();
+    return {
+      showToast,
+      toastData,
+      handleRegister,
+      handleLoginClick,
+      data,
+    };
+  },
 };
 </script>
 <style lang="scss" scoped>

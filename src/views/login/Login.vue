@@ -33,70 +33,75 @@
       </div>
     </div>
   </div>
-  <Toast v-if="toastData.showToast === true" :message="toastData.toastmessage" />
+  <Toast
+    v-if="toastData.showToast === true"
+    :message="toastData.toastmessage"
+  />
 </template>
 
 <script>
 import { useRouter } from "vue-router";
 import { reactive } from "vue";
 import { post } from "../../utils/request";
-import Toast from "../../components/Toast.vue";
-
-//将有关toast的代码和逻辑抽离出来，单独封装成useToastEffect函数，暴露出toastData和showToast方法
-const useToastEffect = () => {
-    const toastData = reactive({
-      showToast: false,
-      toastmessage: "",
-    })
-    const showToast = (message) => {
-      data.showToast = true;
-      data.toastmessage = message;
-      setTimeout(() => {
-        data.showToast = !data.showToast;
-      }, 3000);
-    };
-    return {toastData,showToast};
+import Toast, { useToastEffect } from "../../components/Toast.vue";
+// 登陆逻辑函数
+const useLoginEffect = (showToast) => {
+  const router = useRouter();
+  const data = reactive({
+      username: "",
+      password: "",
+    });
+  const handleLogin = async () => {
+    try {
+      const result = await post("/api/user/login", {
+        username: data.username,
+        password: data.password,
+      });
+      if (result?.data?.errno === 0) {
+        localStorage.isLogin = true;
+        router.push({ name: "Home" });
+      } else {
+        showToast("登录失败");
+      }
+    } catch (error) {
+      showToast("请求失败");
+    }
+  };
+  return{handleLogin,data}
+};
+//注册逻辑函数
+const useRegisterEffect = () => {
+  const router = useRouter();
+  const handleRegisterClick = () => {
+    router.push({name: 'Register'})
   }
+  return {handleRegisterClick};
+}
+//忘记密码逻辑函数
+const useForgotPasswordEffect = () => {
+  const router = useRouter();
+  const handleForgot = () => {
+    router.push({name: 'ForgotPassword'})
+  }
+  return {handleForgot}
+}
+
 export default {
   name: "Login",
   components: { Toast },
   setup() {
-    const router = useRouter();
-    const data = reactive({
-      username: "",
-      password: "",
-    });
-    //引用useToastEffect方法，使得toastData,showToast可以在主流程setup函数中可以正常使用
-    const {toastData,showToast} = useToastEffect();
-    const handleLogin = async () => {
-      try {
-        const result = await post("/api/user/login", {
-          username: data.username,
-          password: data.password,
-        });
-        if (result?.data?.errno === 0) {
-          localStorage.isLogin = true;
-          router.push({ name: "Home" });
-        } else {
-          showToast("登录失败");
-        }
-      } catch (error) {
-        showToast("请求失败");
-      }
-    };
-    const handleRegisterClick = () => {
-      router.push({ name: "Register" });
-    };
-    const handleForgot = () => {
-      router.push({name:'ForgotPassword'})
-    };
+    // setup主要负责主流程
+    const { toastData, showToast } = useToastEffect();
+    const {handleLogin,data}  = useLoginEffect(showToast);
+    const {handleRegisterClick} = useRegisterEffect();
+    const {handleForgot} = useForgotPasswordEffect();
     return {
       handleLogin,
       handleRegisterClick,
       handleForgot,
       data,
       toastData,
-      showToast
+      showToast,
     };
   },
 };

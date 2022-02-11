@@ -1,21 +1,17 @@
 <template>
   <div class="nearby">
     <h3 class="nearby__title">附近店铺</h3>
-    <div class="nearby__items" v-for="(item,index) in list" :key="index">
-      <img
-        :src="item.url"
-        alt=""
-        class="nearby__items__img"
-      />
+    <div class="nearby__items" v-for="(item, index) in list" :key="index">
+      <img :src="item.imgUrl" alt="" class="nearby__items__img" />
       <div class="nearby__items__content">
-        <div class="items__content__title">{{item.title}}</div>
+        <div class="items__content__title">{{ item.name }}</div>
         <div class="items__content__tags">
-          <p class="items__content__tag">{{item.tag1}}</p>
-          <p class="items__content__tag">{{item.tag2}}</p>
-          <p class="items__content__tag">{{item.tag3}}</p>
+          <p class="items__content__tag">月售{{ item.sales }}+</p>
+          <p class="items__content__tag">起送¥{{ item.expressLimit }}</p>
+          <p class="items__content__tag">基础运费¥{{ item.expressPrice }}</p>
         </div>
         <div class="items__content__highlight">
-          {{item.highlight}}
+          {{ item.slogan }}
         </div>
       </div>
     </div>
@@ -23,39 +19,28 @@
 </template>
 
 <script>
+import { get } from "../../utils/request";
+import { ref } from "vue";
+const useGetNearByListEffect = () => {
+  const list = ref([]);
+  const getList = async () => {
+    const result = await get("/api/shop/hot-list");
+    if(result?.errno === 0 && result?.data?.length) {
+      list.value = result.data;
+    }
+  };
+  return { list, getList };
+};
 export default {
   name: "Nearby",
   setup() {
-      const list = [
-          {
-              url:'http://www.dell-lee.com/imgs/vue3/near.png',
-              title:'沃尔玛',
-              tag1:'月售1万+',
-              tag2:'起送¥0',
-              tag3:'基础运费¥5',
-              highlight:'VIP尊享满89元减4元运费券（每月3张）'
-          },
-          {
-              url:'http://www.dell-lee.com/imgs/vue3/水果店.png',
-              title:'一品生鲜',
-              tag1:'月售2万+',
-              tag2:'起送¥0',
-              tag3:'基础运费¥12',
-              highlight:'新鲜车厘子，满200减20'
-          },
-          {
-              url:'http://www.dell-lee.com/imgs/vue3/蛋糕.png',
-              title:'面包坊',
-              tag1:'月售5000+',
-              tag2:'起送¥0',
-              tag3:'基础运费¥3',
-              highlight:'新鲜脏脏包、小蛋糕，生日当天有优惠'
-          },
-      ]
-      return {
-          list
-      }
-  }
+    const { list, getList } = useGetNearByListEffect();
+    getList();
+    return {
+      list,
+      getList,
+    };
+  },
 };
 </script>
 
