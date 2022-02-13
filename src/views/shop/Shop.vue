@@ -11,34 +11,46 @@
         />
       </div>
     </div>
-    <ShopInfo :item="item" :hideBorder="true" />
+    <ShopInfo :item="data.item" :hideBorder="true" v-show="data.item.imgUrl" />
   </div>
+  <Content />
 </template>
 
 <script>
+import { reactive } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { get } from "../../utils/request";
 import ShopInfo from "../../components/ShopInfo.vue";
-import {useRouter} from 'vue-router';
+import Content from "../shop/Content.vue";
+// 逻辑代码抽离
+//获取商店详情逻辑
+const useGetShopListEffect = () => {
+  const route = useRoute();
+  const data = reactive({ item: {} });
+  const getShopList = async () => {
+    const result = await get("/api/shop/`${route.params.id}`");
+    if (result?.errno === 0 && result?.data) {
+      data.item = result.data;
+    }
+  };
+  return { data, getShopList, route };
+};
+//后退按钮逻辑
+const useBackClickEffect = () => {
+  const router = useRouter();
+  const handleBack = () => {
+    router.back();
+  };
+  return { router, handleBack };
+};
 export default {
   name: "Shop",
-  components: { ShopInfo },
+  components: { ShopInfo, Content },
   setup() {
-    const router = useRouter();
-    const item = {
-      _id: "1",
-      name: "沃尔玛",
-      imgUrl: "http://www.dell-lee.com/imgs/vue3/near.png",
-      sales: 10000,
-      expressLimit: 0,
-      expressPrice: 5,
-      slogan: "VIP尊享满89元减4元运费券",
-    };
-    const handleBack = () => {
-        router.back();
-    }
-    return {
-      item,
-      handleBack
-    };
+    const { data, getShopList } = useGetShopListEffect();
+    const { handleBack } = useBackClickEffect();
+    getShopList();
+    return { data, handleBack, getShopList };
   },
 };
 </script>

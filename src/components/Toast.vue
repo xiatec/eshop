@@ -14,6 +14,12 @@ export const useToastEffect = () => {
       showToast: false,
       toastmessage: "",
     })
+    // 父子组件传值过程：
+    // 1父组件自定义属性名并绑定需要传递的数据
+    // 2子组件通过props['属性名']接收父组件,在子组件中通过{{}}对父组
+    // 件对应属性绑定的值进行接收，实现双向绑定
+    
+
     const showToast = (message) => {
       toastData.showToast = true;
       toastData.toastmessage = message;

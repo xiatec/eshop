@@ -33,6 +33,7 @@
       </div>
     </div>
   </div>
+  <!-- 这里定义的：message是传给子组件的变量名，冒号里的才是真实的参数 -->
   <Toast
     v-if="toastData.showToast === true"
     :message="toastData.toastmessage"
