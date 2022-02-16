@@ -26,8 +26,10 @@
         </div>
         <div class="product__number">
           <span class="product__number__minus">-</span>
-          0
-          <span class="product__number__plus">+</span>
+        {{cartList?.[shopId]?.[item._id]?.count || 0}}
+          <span class="product__number__plus" @click="() => {addItemToCart(shopId,item._id,item)}">
+            +
+          </span>
         </div>
       </div>
     </div>
@@ -38,6 +40,7 @@
 import { reactive, toRefs, ref, watchEffect } from "vue";
 import { get } from "../../utils/request";
 import { useRoute } from "vue-router";
+import {useStore} from 'vuex'
 // 代码抽离
 const categories = [
   { name: "全部商品", tab: "all" },
@@ -49,35 +52,54 @@ const useTabEffect = () => {
   const currentTab = ref(categories[0].tab);
   const handleCategoryClick = (tab) => {
     currentTab.value = tab;
-  }
-  return {currentTab,handleCategoryClick};
-}
+  };
+  return { currentTab, handleCategoryClick };
+};
 
 // 右侧栏目展示逻辑
-const useShowContentEffect = (currentTab) => {
-  const route = useRoute();
-  const shopId = route.params.id;
-  const content = reactive({list:[]});
-  const getContentList = async() => {
-    const result = await get(`/api/shop/${shopId}/products`,{tab: currentTab.value});
-    if(result?.errno === 0 && result?.data?.length) {
+const useShowContentEffect = (currentTab,shopId) => {
+  const content = reactive({ list: [] });
+  const getContentList = async () => {
+    const result = await get(`/api/shop/${shopId}/products`, {
+      tab: currentTab.value,
+    });
+    if (result?.errno === 0 && result?.data?.length) {
       content.list = result.data;
     }
+  };
+  watchEffect(() => {
+    getContentList();
+  });
+  const { list } = toRefs(content);
+  return { list };
+};
+// 使用购物车逻辑
+const useCartEffect = () => {
+  const store = useStore();
+  const { cartList }= toRefs(store.state);
+  const addItemToCart = (shopId,productId,productInfo) => {
+    store.commit('addItemToCart',{
+      shopId,productId,productInfo
+    })
   }
-  watchEffect(() => {getContentList()});
-  const {list} = toRefs(content);
-  return {list}
+  return {cartList,addItemToCart}
 }
 export default {
   name: "Content",
   setup() {
+    const route = useRoute();
+    const shopId = route.params.id;
     const { currentTab, handleCategoryClick } = useTabEffect();
-    const { list } = useShowContentEffect(currentTab);
+    const { list } = useShowContentEffect(currentTab,shopId);
+    const {cartList,addItemToCart} = useCartEffect();
     return {
       list,
       categories,
       handleCategoryClick,
       currentTab,
+      shopId,
+      cartList,
+      addItemToCart
     };
   },
 };

@@ -53,7 +53,7 @@ router.beforeEach((to, from, next) => {
   const { isLogin } = localStorage;
   // 逻辑：如果登陆了且去往页面为Login，正常执行，否则跳转回登陆页
   (isLogin || to.name === 'Login' || to.name === 'Register' ||to.name === 'ForgotPassword') ? next() : next({ name:'Login'})  
-  next();
+  // next();
 })
 
 export default router

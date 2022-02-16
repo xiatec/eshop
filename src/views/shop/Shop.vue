@@ -12,8 +12,9 @@
       </div>
     </div>
     <ShopInfo :item="data.item" :hideBorder="true" v-show="data.item.imgUrl" />
+    <Content />
+    <Cart />
   </div>
-  <Content />
 </template>
 
 <script>
@@ -22,6 +23,7 @@ import { useRouter, useRoute } from "vue-router";
 import { get } from "../../utils/request";
 import ShopInfo from "../../components/ShopInfo.vue";
 import Content from "../shop/Content.vue";
+import Cart from '../shop/Cart.vue'
 // 逻辑代码抽离
 //获取商店详情逻辑
 const useGetShopListEffect = () => {
@@ -45,7 +47,7 @@ const useBackClickEffect = () => {
 };
 export default {
   name: "Shop",
-  components: { ShopInfo, Content },
+  components: { ShopInfo, Content,Cart},
   setup() {
     const { data, getShopList } = useGetShopListEffect();
     const { handleBack } = useBackClickEffect();
