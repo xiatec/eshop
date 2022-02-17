@@ -21,19 +21,23 @@ export default createStore({
   },
   // 同步修改数据
   mutations: {
-    addItemToCart(state, payload) {
+    changeCartItemInfo(state, payload) {
       const { shopId, productId, productInfo } = payload;
+      //展示哪一个商店
       let shopInfo = state.cartList[shopId];
       if (!shopInfo) { shopInfo = {} };
+      //展示哪一个商品
       let product = shopInfo[productId];
       if (!product) {
         product = productInfo;
         product.count = 0;
       }
-      product.count += 1;
+      product.count += payload.num;
+      if (product.count <= 0) product.count = 0;
+      //数据渲染
       shopInfo[productId] = product;
       state.cartList[shopId] = shopInfo;
-    }
+    },
   },
   actions: {
   },

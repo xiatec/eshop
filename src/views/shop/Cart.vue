@@ -3,11 +3,11 @@
     <div class="cart__left">
       <div class="cart__img">
         <img src="http://www.dell-lee.com/imgs/vue3/basket.png" alt="" />
-        <p class="notice">1</p>
+        <p class="notice">{{total}}</p>
       </div>
       <div class="cart__counts">
         <span class="cart__desc">总计： </span>
-        <span class="cart__price">¥128</span>
+        <span class="cart__price">¥{{price}}</span>
       </div>
     </div>
     <div class="cart__right">
@@ -17,8 +17,47 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+const useCartEffect = () => {
+  const store = useStore();
+  const route = useRoute();
+  const cartList = store.state.cartList;
+  const shopId = route.params.id;
+  const total = computed(() => {
+    const productList = cartList[shopId];
+    let count = 0;
+    if(productList) {
+      for(let i in productList) {
+        const product = productList[i];
+        count += product.count;
+      }
+    }
+    return count;
+  })
+  const price = computed(() => {
+    const productList = cartList[shopId];
+    let count = 0;
+    if(productList) {
+      for(let i in productList) {
+        const product = productList[i];
+        count += product.count * product.price
+      }
+    }
+    return count.toFixed(2);
+  })
+  return {total,price}
+}
 export default {
   name: "Cart",
+  setup() {
+    const {total,price} = useCartEffect();
+    return{
+      total,
+      price
+    }
+  }
 };
 </script>
 
@@ -41,7 +80,7 @@ export default {
       margin-left: 0.24rem;
     }
     .notice {
-        position: absolute;
+      position: absolute;
       height: 0.2rem;
       width: 0.2rem;
       background: #e93b3b;
@@ -50,11 +89,11 @@ export default {
       border-radius: 50%;
       text-align: center;
       line-height: 0.2rem;
-      font-size: .08rem;
+      font-size: 0.08rem;
       color: #ffffff;
-      line-height: .14rem;
-      bottom: .26rem;
-      left: .47rem;
+      line-height: 0.14rem;
+      bottom: 0.26rem;
+      left: 0.47rem;
     }
     .cart__counts {
       line-height: 0.5rem;
