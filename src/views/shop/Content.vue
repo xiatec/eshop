@@ -40,7 +40,7 @@
 import { reactive, toRefs, ref, watchEffect } from "vue";
 import { get } from "../../utils/request";
 import { useRoute } from "vue-router";
-import {useStore} from 'vuex'
+import {useCommonCartEffect} from '../shop/CommonCartEffect'
 // 代码抽离
 const categories = [
   { name: "全部商品", tab: "all" },
@@ -73,17 +73,6 @@ const useShowContentEffect = (currentTab,shopId) => {
   const { list } = toRefs(content);
   return { list };
 };
-// 使用购物车逻辑
-const useCartEffect = () => {
-  const store = useStore();
-  const { cartList }= toRefs(store.state);
-  const changeCartItemInfo = (shopId,productId,productInfo,num) => {
-    store.commit('changeCartItemInfo',{
-      shopId,productId,productInfo,num
-    })
-  }
-  return {cartList,changeCartItemInfo}
-}
 export default {
   name: "Content",
   setup() {
@@ -91,7 +80,7 @@ export default {
     const shopId = route.params.id;
     const { currentTab, handleCategoryClick } = useTabEffect();
     const { list } = useShowContentEffect(currentTab,shopId);
-    const {cartList,changeCartItemInfo} = useCartEffect();
+    const {cartList,changeCartItemInfo} = useCommonCartEffect();
     return {
       list,
       categories,
