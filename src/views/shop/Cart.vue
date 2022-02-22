@@ -1,10 +1,20 @@
 <template>
+  <div class="mask" v-if="showCart"></div>
   <div class="cart">
-    <div class="product">
+    <div class="product" v-if="showCart">
       <div class="product__header">
-        <div class="product__header__select iconfont">&#xe6f7;</div>
+        <div
+          class="product__header__select iconfont"
+          v-html="allChecked ? '&#xe70f;' : '&#xe6f7;'"
+          @click="() => setCartAll(shopId)"
+        ></div>
         <div class="product__header__all">全选</div>
-        <div class="product__header__clear" @click="() => clearCartItem(shopId)">清空购物车</div>
+        <div
+          class="product__header__clear"
+          @click="() => clearCartItem(shopId)"
+        >
+          清空购物车
+        </div>
       </div>
       <template v-for="item in productList" :key="item._id">
         <div class="product__item" v-if="item.count > 0">
@@ -52,6 +62,7 @@
         <img
           src="http://www.dell-lee.com/imgs/vue3/basket.png"
           class="check__icon__img"
+          @click="handleCartShow"
         />
         <div class="check__icon__tag">{{ total }}</div>
       </div>
@@ -64,7 +75,7 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { useCommonCartEffect } from "../shop/CommonCartEffect";
@@ -73,6 +84,12 @@ import { useCommonCartEffect } from "../shop/CommonCartEffect";
 const useCartEffect = (shopId) => {
   const store = useStore();
   const cartList = store.state.cartList;
+  const showCart = ref(false);
+
+  const handleCartShow = () => {
+    showCart.value = !showCart.value;
+    return showCart;
+  };
 
   const total = computed(() => {
     const productList = cartList[shopId];
@@ -104,6 +121,19 @@ const useCartEffect = (shopId) => {
     const productList = cartList[shopId] || [];
     return productList;
   });
+  const allChecked = computed(() => {
+    const productList = cartList[shopId];
+    let result = true;
+    if (productList) {
+      for (let i in productList) {
+        const product = productList[i];
+        if (product.count > 0 && !product.check) {
+          result = false;
+        }
+      }
+    }
+    return result;
+  });
   const changeCartItemCheck = (shopId, productId) => {
     store.commit("changeCartItemCheck", {
       shopId,
@@ -111,10 +141,23 @@ const useCartEffect = (shopId) => {
     });
   };
   const clearCartItem = (shopId) => {
-    store.commit('clearCartItem',{shopId})
-  }
+    store.commit("clearCartItem", { shopId});
+  };
+  const setCartAll = (shopId) => {
+    store.commit("setCartAll", { shopId });
+  };
 
-  return { total, price, productList, changeCartItemCheck,clearCartItem };
+  return {
+    total,
+    price,
+    productList,
+    changeCartItemCheck,
+    clearCartItem,
+    allChecked,
+    setCartAll,
+    showCart,
+    handleCartShow,
+  };
 };
 
 export default {
@@ -123,8 +166,17 @@ export default {
     const route = useRoute();
     const shopId = route.params.id;
     const { changeCartItemInfo } = useCommonCartEffect();
-    const { total, price, productList, changeCartItemCheck,clearCartItem } =
-      useCartEffect(shopId);
+    const {
+      total,
+      price,
+      productList,
+      changeCartItemCheck,
+      clearCartItem,
+      allChecked,
+      setCartAll,
+      handleCartShow,
+      showCart,
+    } = useCartEffect(shopId);
     return {
       total,
       price,
@@ -132,7 +184,11 @@ export default {
       productList,
       changeCartItemInfo,
       changeCartItemCheck,
-      clearCartItem
+      clearCartItem,
+      allChecked,
+      setCartAll,
+      handleCartShow,
+      showCart,
     };
   },
 };
@@ -140,11 +196,22 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../style/mixins.scss";
+.mask {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 1;
+}
 .cart {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 2;
+  background: #fff;
 }
 .product {
   overflow-y: scroll;
@@ -156,7 +223,9 @@ export default {
     display: flex;
     line-height: 0.52rem;
     &__select {
-      margin-left: 0.185rem;
+      color: #0091ff;
+      margin-left: 0.16rem;
+      font-size: 0.2rem;
     }
     &__all {
       margin-left: 0.084rem;
