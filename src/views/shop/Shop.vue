@@ -12,7 +12,7 @@
       </div>
     </div>
     <ShopInfo :item="data.item" :hideBorder="true" v-show="data.item.imgUrl" />
-    <Content />
+    <Content :shopName='data.item.name'/>
     <Cart />
   </div>
 </template>

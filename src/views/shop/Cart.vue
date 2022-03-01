@@ -1,7 +1,7 @@
 <template>
-  <div class="mask" v-if="showCart"></div>
+  <div class="mask" v-if="showCart && total > 0"></div>
   <div class="cart">
-    <div class="product" v-if="showCart">
+    <div class="product" v-if="showCart && total > 0">
       <div class="product__header">
         <div
           class="product__header__select iconfont"
@@ -69,7 +69,7 @@
       <div class="check__info">
         总计：<span class="check__info__price">&yen; {{ price }}</span>
       </div>
-      <div class="check__btn">去结算</div>
+      <div class="check__btn" @click="handleClick">去结算</div>
     </div>
   </div>
 </template>
@@ -77,7 +77,7 @@
 <script>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useCommonCartEffect } from "../shop/CommonCartEffect";
 
 // 获取购物车信息逻辑
@@ -92,7 +92,7 @@ const useCartEffect = (shopId) => {
   };
 
   const total = computed(() => {
-    const productList = cartList[shopId];
+    const productList = cartList[shopId]?.productList;
     let count = 0;
     if (productList) {
       for (let i in productList) {
@@ -104,7 +104,7 @@ const useCartEffect = (shopId) => {
   });
 
   const price = computed(() => {
-    const productList = cartList[shopId];
+    const productList = cartList[shopId]?.productList;
     let count = 0;
     if (productList) {
       for (let i in productList) {
@@ -118,11 +118,11 @@ const useCartEffect = (shopId) => {
   });
 
   const productList = computed(() => {
-    const productList = cartList[shopId] || [];
+    const productList = cartList[shopId]?.productList || [];
     return productList;
   });
   const allChecked = computed(() => {
-    const productList = cartList[shopId];
+    const productList = cartList[shopId]?.productList;
     let result = true;
     if (productList) {
       for (let i in productList) {
@@ -141,7 +141,7 @@ const useCartEffect = (shopId) => {
     });
   };
   const clearCartItem = (shopId) => {
-    store.commit("clearCartItem", { shopId});
+    store.commit("clearCartItem", { shopId });
   };
   const setCartAll = (shopId) => {
     store.commit("setCartAll", { shopId });
@@ -164,8 +164,12 @@ export default {
   name: "Cart",
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const shopId = route.params.id;
     const { changeCartItemInfo } = useCommonCartEffect();
+    const handleClick = () => {
+      router.push({ name: "Order" });
+    };
     const {
       total,
       price,
@@ -189,6 +193,7 @@ export default {
       setCartAll,
       handleCartShow,
       showCart,
+      handleClick,
     };
   },
 };
@@ -202,7 +207,7 @@ export default {
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(0,0,0,.5);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 .cart {
