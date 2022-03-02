@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-const setLocalStorage = (state) => {
+const setCartStorage = (state) => {
   const { cartList } = state;
   const cartListString = JSON.stringify(cartList);
   localStorage.cartList = cartListString
@@ -50,7 +50,7 @@ export default createStore({
       //数据渲染
       shopInfo.productList[productId] = product;
       state.cartList[shopId] = shopInfo;
-      setLocalStorage(state);
+      setCartStorage(state);
     },
     changeShopName(state, payload) {
       const { shopId, shopName } = payload;
@@ -59,18 +59,18 @@ export default createStore({
       }
       shopInfo.shopName = shopName;
       state.cartList[shopId] = shopInfo;
-      setLocalStorage(state);
+      setCartStorage(state);
     },
     changeCartItemCheck(state, payload) {
       const { shopId, productId } = payload;
       const product = state.cartList[shopId].productList[productId];
       product.check = !product.check;
-      setLocalStorage(state);
+      setCartStorage(state);
     },
     clearCartItem(state, payload) {
       const { shopId} = payload;
       state.cartList[shopId].productList = {};
-      setLocalStorage(state);
+      setCartStorage(state);
     },
     setCartAll(state, payload) {
       const { shopId } = payload;
@@ -81,7 +81,7 @@ export default createStore({
           product.check = true;
         }
       }
-      setLocalStorage(state);
+      setCartStorage(state);
     }
   },
   actions: {

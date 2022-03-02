@@ -31,7 +31,7 @@ export default {
       {
         src: "&#xe610;",
         title: "订单",
-        to: { name: "Order" },
+        to: { name: "Home" },
       },
       {
         src: "&#xe660;",

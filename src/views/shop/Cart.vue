@@ -69,7 +69,9 @@
       <div class="check__info">
         总计：<span class="check__info__price">&yen; {{ price }}</span>
       </div>
-      <div class="check__btn" @click="handleClick">去结算</div>
+      <router-link :to="{path:`/order/${shopId}`}">
+        <div class="check__btn">去结算</div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -167,9 +169,6 @@ export default {
     const router = useRouter();
     const shopId = route.params.id;
     const { changeCartItemInfo } = useCommonCartEffect();
-    const handleClick = () => {
-      router.push({ name: "Order" });
-    };
     const {
       total,
       price,
@@ -193,7 +192,6 @@ export default {
       setCartAll,
       handleCartShow,
       showCart,
-      handleClick,
     };
   },
 };
@@ -356,6 +354,9 @@ export default {
       color: #e93b3b;
       font-size: 0.18rem;
     }
+  }
+  a{
+    text-decoration: none;
   }
   &__btn {
     width: 0.98rem;
