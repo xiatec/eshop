@@ -49,9 +49,9 @@ import Toast, { useToastEffect } from "../../components/Toast.vue";
 const useLoginEffect = (showToast) => {
   const router = useRouter();
   const data = reactive({
-      username: "",
-      password: "",
-    });
+    username: "",
+    password: "",
+  });
   const handleLogin = async () => {
     try {
       const result = await post("/api/user/login", {
@@ -68,24 +68,24 @@ const useLoginEffect = (showToast) => {
       showToast("请求失败");
     }
   };
-  return{handleLogin,data}
+  return { handleLogin, data };
 };
 //注册逻辑函数
 const useRegisterEffect = () => {
   const router = useRouter();
   const handleRegisterClick = () => {
-    router.push({name: 'Register'})
-  }
-  return {handleRegisterClick};
-}
+    router.push({ name: "Register" });
+  };
+  return { handleRegisterClick };
+};
 //忘记密码逻辑函数
 const useForgotPasswordEffect = () => {
   const router = useRouter();
   const handleForgot = () => {
-    router.push({name: 'ForgotPassword'})
-  }
-  return {handleForgot}
-}
+    router.push({ name: "ForgotPassword" });
+  };
+  return { handleForgot };
+};
 
 export default {
   name: "Login",
@@ -93,9 +93,9 @@ export default {
   setup() {
     // setup主要负责主流程
     const { toastData, showToast } = useToastEffect();
-    const {handleLogin,data}  = useLoginEffect(showToast);
-    const {handleRegisterClick} = useRegisterEffect();
-    const {handleForgot} = useForgotPasswordEffect();
+    const { handleLogin, data } = useLoginEffect(showToast);
+    const { handleRegisterClick } = useRegisterEffect();
+    const { handleForgot } = useForgotPasswordEffect();
     return {
       handleLogin,
       handleRegisterClick,

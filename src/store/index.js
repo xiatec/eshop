@@ -70,7 +70,6 @@ export default createStore({
     clearCartItem(state, payload) {
       const { shopId} = payload;
       state.cartList[shopId].productList = {};
-      setCartStorage(state);
     },
     setCartAll(state, payload) {
       const { shopId } = payload;
@@ -82,6 +81,9 @@ export default createStore({
         }
       }
       setCartStorage(state);
+    },
+    clearCartData(state, shopId) {
+      state.cartList[shopId].productList = {}
     }
   },
   actions: {

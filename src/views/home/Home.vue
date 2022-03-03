@@ -6,7 +6,7 @@
     <Nearby />
   </div>
   <!-- 底部导航条组件 -->
-  <Docker />
+  <Docker :currentIndex="0" />
 </template>
 
 <script>

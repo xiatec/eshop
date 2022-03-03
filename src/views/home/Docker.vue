@@ -1,7 +1,7 @@
 <template>
   <div class="docker">
     <div
-      :class="{ docker__item: true, 'docker__item--active': index === 0 }"
+      :class="{ docker__item: true, 'docker__item--active': index === currentIndex }"
       v-for="(item, index) in list"
       :key="index"
     >
@@ -16,6 +16,7 @@
 <script>
 export default {
   name: "Docker",
+  props: ['currentIndex'],
   setup() {
     const list = [
       {
@@ -31,7 +32,7 @@ export default {
       {
         src: "&#xe610;",
         title: "订单",
-        to: { name: "Home" },
+        to: { name: "Pay" },
       },
       {
         src: "&#xe660;",
