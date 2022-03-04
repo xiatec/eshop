@@ -71,18 +71,18 @@ export default {
 .wrapper {
   background-color: #f8f8f8;
   z-index: 1;
-  overflow-y: auto;
+  // overflow-y: auto;
   position: absolute;
   top: 0;
   right: 0;
   left: 0;
-  bottom: 0rem;
+  bottom: 0;
   margin: 0 0.18rem;
 }
 .order {
   &__title {
     text-align: center;
-    font-size: 16px;
+    font-size: .16rem;
     color: #333333;
     margin-top: 0.12rem;
   }
@@ -98,11 +98,11 @@ export default {
       position: absolute;
       right: 0.16rem;
       bottom: 0;
-      font-size: 14px;
+      font-size: .14rem;
       color: #999999;
     }
     &__shop {
-      font-size: 16px;
+      font-size: .16rem;
       color: #333333;
       margin: 0.16rem 0 0 0.16rem;
     }
@@ -123,12 +123,12 @@ export default {
       margin-top: 0.24rem;
     }
     &__highlight {
-      font-size: 14px;
+      font-size: .14rem;
       color: #e93b3b;
       margin-bottom: 0.06rem;
     }
     &__total {
-      font-size: 12px;
+      font-size: .12rem;
       color: #333333;
       text-align: right;
     }

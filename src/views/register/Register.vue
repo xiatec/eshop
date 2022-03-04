@@ -108,7 +108,7 @@ export default {
       button {
         border: none;
         background: none;
-        font-size: 14px;
+        font-size: .14rem;
         color: rgba(0, 0, 0, 0.5);
         letter-spacing: 0;
       }
@@ -124,14 +124,14 @@ export default {
     width: 100%;
     outline: none;
     background: #f9f9f9;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    border: .01rem solid rgba(0, 0, 0, 0.1);
     border-radius: 0.06rem;
     box-sizing: border-box;
     padding-left: 0.16rem;
-    font-size: 16px;
+    font-size: .16rem;
     color: rgba(0, 0, 0, 0.5);
     letter-spacing: 0;
-    line-height: 24px;
+    line-height: .24rem;
   }
   .login-btn {
     border: none;
@@ -139,13 +139,13 @@ export default {
     height: 0.48rem;
     width: 100%;
     background: #0091ff;
-    box-shadow: 0 4px 8px 0 rgba(0, 145, 255, 0.32);
-    border-radius: 4px;
-    font-size: 16px;
+    box-shadow: 0 .04rem .08rem 0 rgba(0, 145, 255, 0.32);
+    border-radius: .04rem;
+    font-size: .16rem;
     color: #ffffff;
     letter-spacing: 0;
     text-align: center;
-    line-height: 24px;
+    line-height: .24rem;
   }
 }
 </style>

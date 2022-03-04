@@ -222,7 +222,7 @@ export default {
   background: #fff;
   &__header {
     height: 0.52rem;
-    border: 1px solid #f1f1f1;
+    border: .01rem solid #f1f1f1;
     display: flex;
     line-height: 0.52rem;
     &__select {
@@ -232,14 +232,14 @@ export default {
     }
     &__all {
       margin-left: 0.084rem;
-      font-size: 14px;
+      font-size: .14rem;
       color: #333333;
     }
     &__clear {
       flex: 1;
       text-align: right;
       margin-right: 0.18rem;
-      font-size: 14px;
+      font-size: .14rem;
       color: #333333;
       text-align: right;
     }

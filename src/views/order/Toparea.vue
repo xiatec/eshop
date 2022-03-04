@@ -49,7 +49,7 @@ export default {
       margin-right: auto;
       margin-top: 0.3rem;
       transform: translateX(-50%);
-      font-size: 16px;
+      font-size: .16rem;
       color: #ffffff;
     }
   }
@@ -57,10 +57,10 @@ export default {
     background: #fff;
     margin: 0.28rem 0.18rem 0.16rem 0.18rem;
     height: 1.11rem;
-    border-radius: 4px;
+    border-radius: .04rem;
     position: relative;
     &__title {
-      font-size: 16px;
+      font-size: .16rem;
       color: #333333;
       line-height: 0.22rem;
       margin-left: 0.16rem;
@@ -68,13 +68,13 @@ export default {
       padding-top: 0.16rem;
     }
     &__address {
-      font-size: 14px;
+      font-size: .14rem;
       color: #333333;
       line-height: 0.2rem;
       margin-left: 0.16rem;
     }
     &__info {
-      font-size: 12px;
+      font-size: .12rem;
       color: #666666;
       line-height: 0.17rem;
       margin-left: 0.16rem;

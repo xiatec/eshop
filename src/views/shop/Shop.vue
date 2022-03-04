@@ -77,14 +77,14 @@ export default {
     display: flex;
     width: 100%;
     background: #f5f5f5;
-    border-radius: 16px;
+    border-radius: .16rem;
     &__input {
       border: none;
       outline: none;
       background: none;
-      font-size: 14px;
+      font-size: .14rem;
       color: #333333;
-      line-height: 16px;
+      line-height: .16rem;
     }
     &__icon {
       line-height: 0.32rem;

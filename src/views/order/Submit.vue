@@ -122,12 +122,12 @@ export default {
       text-align: center;
       margin-top: 0.24rem;
       margin-bottom: 0.08rem;
-      font-size: 18px;
+      font-size: .18rem;
       color: #333333;
     }
     &__desc {
       text-align: center;
-      font-size: 14px;
+      font-size: .14rem;
       color: #666666;
     }
     &__btns {
@@ -141,8 +141,8 @@ export default {
       line-height: 0.32rem;
       width: 0.8rem;
       height: 0.32rem;
-      border: 1px solid #4fb0f9;
-      border-radius: 16px;
+      border: .01rem solid #4fb0f9;
+      border-radius: .16rem;
       font-size: 0.14rem;
     }
     &__leftbtn {

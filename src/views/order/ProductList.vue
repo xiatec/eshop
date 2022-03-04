@@ -45,14 +45,14 @@ export default {
   overflow-y: scroll;
   margin: 0.16rem 0.18rem 0 0.18rem;
   background-color: #fff;
-  border-radius: 4px;
+  border-radius: .04rem;
   box-sizing: border-box;
   padding-left: 0.16rem;
   padding-top: 0.16rem;
   max-height: 3.8rem;
   position: relative;
   &__shop {
-    font-size: 16px;
+    font-size: .16rem;
     color: #333333;
   }
   &__items {
@@ -67,7 +67,7 @@ export default {
       flex: 1;
     }
     &__title {
-      font-size: 14px;
+      font-size: .14rem;
       color: #333333;
     }
     &__price {
@@ -76,15 +76,15 @@ export default {
       position: relative;
     }
     &__highlight {
-      font-size: 14px;
+      font-size: .14rem;
       color: #e93b3b;
-      line-height: 20px;
+      line-height: .20rem;
     }
     &__total {
-      font-size: 14px;
+      font-size: .14rem;
       color: #000000;
       text-align: right;
-      line-height: 20px;
+      line-height: .20rem;
       position: absolute;
       right: 0.18rem;
     }
@@ -94,7 +94,7 @@ export default {
     height: 0.28rem;
     line-height: 0.28rem;
     background-color: #f5f5f5;
-    font-size: 14px;
+    font-size: .14rem;
     color: #999999;
     text-align: center;
     margin-top: 0.16rem;

@@ -14,7 +14,7 @@ export default {
   setup() {
     const router = useRouter();
     const handleCancel = () => {
-      router.back();
+      router.push({name: 'Pay'})
     }
     return{handleCancel}
   }
@@ -27,7 +27,7 @@ export default {
   width: 3.01rem;
   height: 1.56rem;
   background: #ffffff;
-  border-radius: 4px;
+  border-radius: .04rem;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -39,7 +39,7 @@ export default {
     margin-top: 0.42rem;
   }
   .notice {
-    font-size: 18px;
+    font-size: .18rem;
     color: #333333;
     text-align: center;
     margin-top: 0.24rem;

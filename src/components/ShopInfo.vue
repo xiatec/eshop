@@ -40,7 +40,7 @@ export default {
   margin-left: 0.16rem;
   padding-bottom: 0.12rem;
   &--bordered {
-      border-bottom: 1px solid $background-color;
+      border-bottom: .01rem solid $background-color;
   }
 }
 .shop__content__title {
