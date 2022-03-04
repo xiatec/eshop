@@ -3,139 +3,24 @@
     <Docker :currentIndex="2" />
     <div class="order">
       <div class="order__title">我的订单</div>
-      <div class="order__items">
+      <div class="order__items" v-for="(item, index) in list" :key="index">
         <div class="order__items__top">
-          <div class="order__items__shop">沃尔玛</div>
-          <div class="order__items__status">已取消</div>
+          <div class="order__items__shop">{{ item.shopName }}</div>
+          <div class="order__items__status">
+            {{ item.isCanceled ? "已取消" : "已下单" }}
+          </div>
         </div>
         <div class="order__items__details">
-          <div class="order__items__imgs">
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/cherry.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/cherry.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/orange.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/orange.png"
-              alt=""
-              class="order__items__img"
-            />
+          <div
+            class="order__items__imgs"
+            v-for="(innerItem, innerIndex) in item.products"
+            :key="innerIndex"
+          >
+            <img :src="innerItem.product.img" alt="" class="order__items__img" />
           </div>
           <div class="order__items__info">
-            <div class="order__items__highlight">¥66.69</div>
-            <div class="order__items__total">共6件</div>
-          </div>
-        </div>
-      </div>
-      <div class="order__items">
-        <div class="order__items__top">
-          <div class="order__items__shop">沃尔玛</div>
-          <div class="order__items__status">已取消</div>
-        </div>
-        <div class="order__items__details">
-          <div class="order__items__imgs">
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/cherry.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/cherry.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/orange.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/orange.png"
-              alt=""
-              class="order__items__img"
-            />
-          </div>
-          <div class="order__items__info">
-            <div class="order__items__highlight">¥66.69</div>
-            <div class="order__items__total">共6件</div>
-          </div>
-        </div>
-      </div>
-      <div class="order__items">
-        <div class="order__items__top">
-          <div class="order__items__shop">沃尔玛</div>
-          <div class="order__items__status">已取消</div>
-        </div>
-        <div class="order__items__details">
-          <div class="order__items__imgs">
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/cherry.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/cherry.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/orange.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/orange.png"
-              alt=""
-              class="order__items__img"
-            />
-          </div>
-          <div class="order__items__info">
-            <div class="order__items__highlight">¥66.69</div>
-            <div class="order__items__total">共6件</div>
-          </div>
-        </div>
-      </div>
-      <div class="order__items">
-        <div class="order__items__top">
-          <div class="order__items__shop">沃尔玛</div>
-          <div class="order__items__status">已取消</div>
-        </div>
-        <div class="order__items__details">
-          <div class="order__items__imgs">
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/cherry.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/cherry.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/orange.png"
-              alt=""
-              class="order__items__img"
-            />
-            <img
-              src="http://www.dell-lee.com/imgs/vue3/orange.png"
-              alt=""
-              class="order__items__img"
-            />
-          </div>
-          <div class="order__items__info">
-            <div class="order__items__highlight">¥66.69</div>
-            <div class="order__items__total">共6件</div>
+            <div class="order__items__highlight">¥{{item.total}}</div>
+            <div class="order__items__total">共{{item.sales}}件</div>
           </div>
         </div>
       </div>
@@ -144,27 +29,41 @@
 </template>
 
 <script>
-import {reactive,toRefs} from 'vue';
-import{get} from '../../utils/request' 
+import { reactive, toRefs } from "vue";
+import { get } from "../../utils/request";
 import Docker from "../../views/home/Docker.vue";
 const useOrderListEffect = () => {
-      const data = reactive({list: []})
-      const getOrderList = async() => {
-          const result = await get('/api/order')
-          if(result?.errno === 0 && result?.data?.length) {
-              data.list = result.value;
-          }
-      }
-      getOrderList();
-      const {list} = toRefs(data);
-      return{list} 
-  }
+  const data = reactive({ list: [] });
+  const getOrderList = async () => {
+    const result = await get("/api/order");
+    if (result?.errno === 0 && result?.data?.length) {
+      const orderList = result.data;
+      orderList.forEach((order) => {
+        const products = order.products;
+        let total = 0;
+        let sales = 0;
+        products.forEach((productItem) => {
+          total += productItem.product.price * productItem.orderSales
+          sales += productItem.orderSales;
+        })
+        order.total = total;
+        order.sales = sales;
+      })
+      console.log(orderList);
+      data.list = result.data;
+    }
+  };
+  getOrderList();
+  const { list } = toRefs(data);
+  return { list };
+};
 export default {
   name: "Pay",
   components: { Docker },
   setup() {
-
-  }
+    const { list } = useOrderListEffect();
+    return { list };
+  },
 };
 </script>
 
@@ -190,7 +89,7 @@ export default {
   &__items {
     background: #fff;
     position: relative;
-    margin-bottom: .16rem;
+    margin-bottom: 0.16rem;
     &__top {
       position: relative;
       display: flex;
