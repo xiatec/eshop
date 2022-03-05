@@ -44,7 +44,9 @@
           alt=""
           class="inf__settings__item__img address"
         />
-        <span class="inf__settings__item__desc" @click="handleAddress">我的地址</span>
+        <span class="inf__settings__item__desc" @click="handleAddress"
+          >我的地址</span
+        >
         <span class="iconfont">&#xe629;</span>
       </div>
       <div class="inf__settings__item">
@@ -62,23 +64,25 @@
 </template>
 <script>
 import Docker from "../../views/home/Docker.vue";
-import {useRouter} from 'vue-router';
+import { useRouter } from "vue-router";
 export default {
   name: "My",
   components: { Docker },
   setup() {
-      const router = useRouter();
-      const handleAddress = () => {
-          router.push({name: 'myAddress'})
-      }
-      return {handleAddress}
-  }
+    const router = useRouter();
+    const handleAddress = () => {
+      router.push({ name: "myAddress" });
+    };
+    return { handleAddress };
+  },
 };
 </script>
 <style lang="scss" scoped>
 .wrapper {
   height: 2.5rem;
   background-image: linear-gradient(239deg, #3a6ff3 0%, #50c7fb 100%);
+  border-bottom-left-radius: 90% 40%;
+  border-bottom-right-radius: 90% 40%;
   .inf__top {
     position: absolute;
     background: #ffffff;
