@@ -97,7 +97,7 @@ export default {
   left: 0.18rem;
   right: 0.18rem;
   bottom: 0;
-  background: #f8f8f8;
+  // background: #f8f8f8;
   &__items {
     border-bottom: 1px solid #f1f1f1;
     font-size: 0.14rem;

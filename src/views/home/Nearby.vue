@@ -2,8 +2,13 @@
   <div class="nearby">
     <h3 class="nearby__title">附近店铺</h3>
     <!-- 通过:语法将数据暴露给外部，供子组件使用 -->
-    <router-link v-for="(item,index) in list" :to='`/shop/${item._id}`'  :key="index" >
-      <ShopInfo :item='item' :hideBorder="false"/>
+    <!-- 模板中使用数据时,会自动调用value属性,不需要使用value -->
+    <router-link
+      v-for="(item, index) in list"
+      :to="`/shop/${item._id}`"
+      :key="index"
+    >
+      <ShopInfo :item="item" :hideBorder="false" />
     </router-link>
   </div>
 </template>
@@ -24,7 +29,7 @@ const useGetNearByListEffect = () => {
 };
 export default {
   name: "Nearby",
-  components:{ShopInfo},
+  components: { ShopInfo },
   setup() {
     const { list, getList } = useGetNearByListEffect();
     getList();

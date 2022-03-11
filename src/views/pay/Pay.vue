@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-       <div class="order__items" v-for="(item, index) in list" :key="index">
+      <div class="order__items" v-for="(item, index) in list" :key="index">
         <div class="order__items__top">
           <div class="order__items__shop">{{ item.shopName }}</div>
           <div class="order__items__status">
@@ -52,7 +52,6 @@
           </div>
         </div>
       </div>
-      
     </div>
   </div>
   <Docker :currentIndex="2" />
@@ -68,6 +67,7 @@ const useOrderListEffect = () => {
     const result = await get("/api/order");
     if (result?.errno === 0 && result?.data?.length) {
       const orderList = result.data;
+      console.log(orderList);
       orderList.forEach((order) => {
         const products = order.products;
         let total = 0;
@@ -79,7 +79,7 @@ const useOrderListEffect = () => {
         order.total = total;
         order.sales = sales;
       });
-      console.log(orderList);
+      // console.log(orderList);
       data.list = result.data;
     }
   };
@@ -108,15 +108,15 @@ export default {
   // margin: 0 0.18rem;
 }
 .order {
-  margin: 0 .18rem;
-  margin-top: .16rem;
+  margin: 0 0.18rem;
+  margin-top: 0.16rem;
   &__title {
     background-color: #fff;
     text-align: center;
     font-size: 0.16rem;
     color: #333333;
     padding-top: 0.11rem;
-    padding-bottom:.11rem;
+    padding-bottom: 0.11rem;
   }
   &__items {
     background: #fff;
